@@ -98,9 +98,9 @@ const filter = e.target.dataset.filter || e.target.parentNode.dataset.filter
 //스크롤, 해당 메뉴 표시 
 
 //1. 모든 섹션 요소들과 메뉴 아이템들을 가지고 온다
-const sectionIdS = ['#home', '#about', '#skills', '#work', '#testimonials', '#contact'];
-const sections = sectionIdS.map(id => document.querySelector(id));
-const navItems = sectionIdS.map(id => document.querySelector(`[data-link="${id}"]`));
+const sectionIds = ['#home', '#about', '#skills', '#work', '#testimonials', '#contact'];
+const sections = sectionIds.map(id => document.querySelector(id));
+const navItems = sectionIds.map(id => document.querySelector(`[data-link="${id}"]`));
 
 let selectedNavIndex = 0;
 let selectedNavItem = navItems[0];
@@ -115,7 +115,7 @@ const observerOptions = { //observer옵션 만들기
 const observerCallback = (entries, observer) => { //observer 콜백 만들기
     entries.forEach(entry => {
         if(!entry.isIntersecting && entry.intersectionRatio > 0 ) { // 엔트리가 빠져나가고 ratio가 0이상일때
-            const index = sectionIdS.indexOf(`#${entry.target.id}`);
+            const index = sectionIds.indexOf(`#${entry.target.id}`);
            
             //y 좌표가 마이너스, 스크롤링이 아래로 / 페이지가 위로
             if(entry.boundingClientRect.y < 0) {
@@ -141,15 +141,15 @@ window.addEventListener('wheel', () => {
     selectNavItem(navItems[selectedNavIndex]); //함수 호출
 })
 
-
-//공통 함수
-function scrollIntoView(selector) {
-    const scrollTo = document.querySelector(selector);
-    scrollTo.scrollIntoView({behavior: 'smooth'});
-}
-
+//공통함수
 function selectNavItem(selected) {
     selectedNavItem.classList.remove('active');
     selectedNavItem = selected;
     selectedNavItem.classList.add('active');
+}
+
+function scrollIntoView(selector) {
+    const scrollTo = document.querySelector(selector);
+    scrollTo.scrollIntoView({behavior: 'smooth'});
+    selectNavItem(navItems[sectionIds.indexOf(selector)]);
 }
